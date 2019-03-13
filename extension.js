@@ -45,9 +45,17 @@ function activate(context) {
 					LineNumber/ColNumber\n
 				`)
 			} else {
-				let LineNumber = matcher[1]
-				let ColNumber = matcher[2]
+				let LineNumber = matcher[1] * 1
+				let ColNumber = matcher[2] * 1
+				let Range = vscode.Range
+				let Position = vscode.Position
+				let doc = vscode.window.activeTextEditor.document
+				let newRange = new Range(new Position(LineNumber, ColNumber), new Position(LineNumber, ColNumber))
 				// TODO: 光标定位
+				vscode.window.activeTextEditor.revealRange(newRange, 1)
+				// vscode.window.onDidChangeTextEditorSelection(e => {
+				// 	console.log('editor:', e)
+				// })
 			}
 		})
 	});
