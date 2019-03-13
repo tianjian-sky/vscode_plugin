@@ -20,17 +20,40 @@ function activate(context) {
 	let disposable = vscode.commands.registerCommand('extension.helloWorld', function () {
 		vscode.window.showInformationMessage('Hello World!');
 	});
-
-	let disposable2 = vscode.commands.registerCommand('extension.codePosition', function () {
-		vscode.window.showInformationMessage('Code Position');
+	let disposable2 = vscode.commands.registerTextEditorCommand('extension.codePosition', function (textEditor, TextEditorEdit) {
+		// console.log(vscode)
+		// console.log(textEditor, TextEditorEdit)
+		vscode.window.showInputBox({
+			ignoreFocusOut: false,
+			password: false,
+			placeHolder: 'Please input line number and column number. (e.g.: 12@375, 12 375, 12|375, 12/375)',
+			prompt: '',
+			value: ''
+		})
+		.then((res) => {
+			console.log('bbb', res)
+			let rFormat = /(\d+)[@/|\s](\d+)/i
+			let matcher
+			if (!res || !res.trim()) {
+				vscode.window.showInformationMessage('Sorry, no input detected!')
+			} else if (!(matcher = res.match(rFormat))) {
+				vscode.window.showErrorMessage(`Invalid input format!\n
+					Please provide the line/col number in one of the format below:\n
+					LineNumber@ColNumber\n
+					LineNumber ColNumber\n
+					LineNumber|ColNumber\n
+					LineNumber/ColNumber\n
+				`)
+			} else {
+				let LineNumber = matcher[1]
+				let ColNumber = matcher[2]
+				// TODO: 光标定位
+			}
+		})
 	});
 
-	let disposable3 = vscode.commands.registerCommand('extension.codePosition2', function () {
-		vscode.window.showInformationMessage('Code Position2');
-	});
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(disposable2);
-	context.subscriptions.push(disposable3);
 }
 exports.activate = activate;
 

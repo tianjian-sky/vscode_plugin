@@ -11,8 +11,7 @@
 	],
 	"activationEvents": [
 		"onCommand:extension.helloWorld",
-		"onCommand:extension.codePosition",
-		"onCommand:extension.codePosition2"
+		"onCommand:extension.codePosition"
 	],
 	"main": "./extension.js",
 	"contributes": {
@@ -23,13 +22,17 @@
 			},
 			{
 				"command": "extension.codePosition",
-				"title": "Code Position"
-			},
-			{
-				"command": "extension.codePosition2",
-				"title": "Code Position2"
+				"title": "快速定位光标"
 			}
-		]
+		],
+		"menus": {
+			"editor/context": [{
+				"when": "editorFocus",
+				"command": "extension.codePosition",
+				"alt": "extension.codePosition",
+				"group": "z_commands"
+			}]
+		}
 	},
 	"scripts": {
 		"postinstall": "node ./node_modules/vscode/bin/install",
